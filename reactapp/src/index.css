@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: black;
+    height: 200vh;
+}
+
+
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    10%,
+    90% {
+        transform: translateY(-0.2rem);
+    }
+
+    20%,
+    80% {
+        transform: translateY(0.2rem);
+    }
+
+    30%,
+    70% {
+        transform: translateY(-0.1rem);
+    }
+
+    40%,
+    60% {
+        transform: translateY(0.1rem);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.error-shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+.error-highlight {
+    border-color: red;
+}
+
+.app-loading {
+    filter: blur(5px);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes speedChange {
+    0% {
+        animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    }
+
+    50% {
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+    }
+
+    100% {
+        animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    }
+}
+
+.transition-opacity {
+    transition-property: opacity;
+    transition-duration: 0.15s;
+  }
+  
+  .opacity-0 {
+    opacity: 0;
+  }
+  
+  .opacity-100 {
+    opacity: 1;
+  }
+  

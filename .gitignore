@@ -1,0 +1,23 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+
+# React
+/node_modules/
+/build/
+
+# IDE (opcjonalnie, jeśli korzystasz z Visual Studio Code)
+.vscode/
+
+# Systemowe
+.DS_Store
+Thumbs.db
+
+venv/
+```
+
+
