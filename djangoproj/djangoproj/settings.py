@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +28,9 @@ SECRET_KEY = 'django-insecure-_co-rwdqoh=q4pf8mwyiuh237z_^z-eo15seu=py_li8%5w2mt
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+
 
 
 
@@ -89,6 +93,10 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SECURE = True
 
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "sessionid",
+)
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
 
