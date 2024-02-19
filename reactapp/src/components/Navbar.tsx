@@ -2,6 +2,7 @@ import  React from 'react';
 import { useLogout } from '../hooks/useLogout'; 
 import { UserData } from '../types/UserData';
 
+
 interface NavbarProps {
   onSignUpClick: () => void;
   onLoginClick: () => void;
