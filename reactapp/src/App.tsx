@@ -61,11 +61,13 @@ function App() {
 
   return (
     <div >
+      
       <AuthProvider>
       {isLoading ? (
           <LoadingScreen />
         ) : (
           <>
+          <CSRFTokenProvider>
             <Navbar
               onSignUpClick={() => setIsRegisterOpen(true)}
               onLoginClick={handleLoginClick}
@@ -73,7 +75,7 @@ function App() {
               currentUser={currentUser}
               onToggleSidebar={toggleSidebar}
             />
-            <CSRFTokenProvider>
+            
               {isRegisterOpen && (
                 <RegistrationForm
                   onClose={() => setIsRegisterOpen(false)}
@@ -88,11 +90,12 @@ function App() {
                   onLoginSuccess={onLoginSuccess}
                 />
               )}
-            </CSRFTokenProvider>
+               </CSRFTokenProvider>
             <div className={`${isRegisterOpen || isLoginOpen ? "filter blur-lg" : ""}`}></div>
           </>
         )}
       </AuthProvider>
+  
     </div>
   );
 }

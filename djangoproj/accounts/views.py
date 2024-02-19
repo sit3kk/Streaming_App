@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 
 class CheckAuthenticatedView(APIView):
     def get(self, request, format=None):
+ 
         user = self.request.user
 
         try:

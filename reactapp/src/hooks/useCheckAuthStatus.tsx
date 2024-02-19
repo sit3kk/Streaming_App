@@ -1,20 +1,34 @@
 import { useEffect } from 'react';
 import { UserData } from '../types/UserData';
 
-
 export const useCheckAuthStatus = (
   setIsAuthenticated: (isAuthenticated: boolean) => void,
   setCurrentUser: (user: UserData | null) => void
 ) => {
   useEffect(() => {
+
+    const sessionidFromCookie = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('sessionid='))
+    ?.split('=')[1];
+    
     const checkAuthenticatedStatus = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/accounts/authenticated', {
-          credentials: 'include',
+        
+        const response = await fetch("http://127.0.0.1:8000/api/accounts/authenticated", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'sessionid': sessionidFromCookie || '',
+        },  
+        
         });
         const data = await response.json();
 
         if (data.isAuthenticated === 'success') {
+          console.log('Authenticated:', data);
           setIsAuthenticated(true);
           setCurrentUser({ username: data.user });
         } else {
