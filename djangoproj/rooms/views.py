@@ -7,6 +7,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from .serializers import RoomSerializer
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import AllowAny
 
 
 @method_decorator(login_required, name='dispatch')
@@ -19,8 +20,7 @@ class CreateRoomView(APIView):
         room_description = data['room_description']
         room_owner = self.request.user
 
-
-        print(room_topic, room_name, room_description, room_owner)
+        
 
     
         try:
@@ -65,6 +65,7 @@ class DeleteRoomView(APIView):
         
 
 class ListRoomsView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, format=None):
         try:
             rooms = Room.objects.all()

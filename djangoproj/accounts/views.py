@@ -6,13 +6,14 @@ from rest_framework.response import Response
 #from .serializers import UserSerializer
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import AllowAny
+
 
 
 class CheckAuthenticatedView(APIView):
+    permission_classes = (permissions.AllowAny, )
     def get(self, request, format=None):
- 
         user = self.request.user
-
         try:
             isAuthenticated = user.is_authenticated
 
@@ -90,6 +91,7 @@ class GetCSRFToken(APIView):
 
     def get(self, request, format=None):
         return Response({ 'success': 'CSRF cookie set' })
+
 
 class DeleteAccountView(APIView):
     def delete(self, request, format=None):
