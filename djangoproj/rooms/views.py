@@ -69,7 +69,7 @@ class ListRoomsView(APIView):
     def get(self, request, format=None):
 
         try:
-            rooms = Room.objects.all()
+            rooms = Room.objects.all().order_by('-created_at')
             serializer = RoomSerializer(rooms, many=True)
             return Response(serializer.data, status=200)
         except Exception as e:

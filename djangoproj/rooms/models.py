@@ -10,6 +10,7 @@ class Room(models.Model):
     room_name = models.CharField(max_length=100, default='None')
     room_topic = models.CharField(max_length=100,default='None')
     room_owner = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     room_description = models.TextField()
 
     def save(self, *args, **kwargs):
