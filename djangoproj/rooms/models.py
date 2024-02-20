@@ -7,7 +7,8 @@ from django.utils.crypto import get_random_string
 
 class Room(models.Model):
     room_id = models.CharField(primary_key=True, max_length=6, unique=True) 
-    room_name = models.CharField(max_length=100, unique=True, default='None')
+    room_name = models.CharField(max_length=100, default='None')
+    room_topic = models.CharField(max_length=100,default='None')
     room_owner = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     room_description = models.TextField()
 
