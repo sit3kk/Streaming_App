@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-body {
+body, html, #root {
     font-family: 'Nunito', sans-serif;
     background-color: black;
     height: 200vh;

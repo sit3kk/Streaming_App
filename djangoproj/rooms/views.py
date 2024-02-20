@@ -67,6 +67,7 @@ class DeleteRoomView(APIView):
 class ListRoomsView(APIView):
     permission_classes = [AllowAny]
     def get(self, request, format=None):
+
         try:
             rooms = Room.objects.all()
             serializer = RoomSerializer(rooms, many=True)

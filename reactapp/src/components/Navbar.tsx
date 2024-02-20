@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const logout = useLogout(); 
 
   return (
-    <nav className="bg-neutral-800 text-white flex justify-between items-center p-4">
+    <nav className="bg-neutral-800 text-white fixed top-0 left-0 w-full flex justify-between items-center p-3 z-50">
       <a href="/" className="text-xl font-bold">StreamsPL</a>
       {isAuthenticated && currentUser ? (
         <div>

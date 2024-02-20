@@ -5,7 +5,7 @@ import '../index.css'
 interface RegistrationFormProps {
   onClose: () => void;
   onSignUpSuccess: () => void;
-  onLoginClick: () => void; // Dodajemy prop onLoginClick
+  onLoginClick: () => void; 
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose, onSignUpSuccess, onLoginClick }) => {

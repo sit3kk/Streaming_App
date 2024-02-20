@@ -8,6 +8,8 @@ import { useCheckAuthStatus } from './hooks/useCheckAuthStatus.tsx';
 import { UserData } from './types/UserData';
 import { AuthProvider } from './contexts/AuthContext.tsx';
 import LoadingScreen from "./components/LoadingScreen";
+import ContentContainer from "./components/ContentContainer.tsx";
+import Footer from "./components/Footer.tsx";
 
 
 function App() {
@@ -60,8 +62,8 @@ function App() {
   useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
   return (
-    <div >
-      
+
+    <div className="h-full">
       <AuthProvider>
       {isLoading ? (
           <LoadingScreen />
@@ -75,7 +77,10 @@ function App() {
               currentUser={currentUser}
               onToggleSidebar={toggleSidebar}
             />
-            
+
+            <ContentContainer/>
+          
+
               {isRegisterOpen && (
                 <RegistrationForm
                   onClose={() => setIsRegisterOpen(false)}
@@ -91,11 +96,15 @@ function App() {
                 />
               )}
                </CSRFTokenProvider>
+            
             <div className={`${isRegisterOpen || isLoginOpen ? "filter blur-lg" : ""}`}></div>
           </>
+          
         )}
       </AuthProvider>
-  
+
+      <Footer />
+    
     </div>
   );
 }
