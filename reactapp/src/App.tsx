@@ -12,6 +12,8 @@ import ContentContainer from "./components/ContentContainer.tsx";
 import Footer from "./components/Footer.tsx";
 
 
+
+
 function App() {
   const [isRegisterOpen, setIsRegisterOpen] = useState<boolean>(false);
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
@@ -102,10 +104,9 @@ function App() {
           
         )}
       </AuthProvider>
-
-      <Footer />
-    
+      <Footer /> 
     </div>
+    
   );
 }
 
