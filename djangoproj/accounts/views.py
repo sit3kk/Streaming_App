@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny
 
 
 class CheckAuthenticatedView(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.AllowAny)
     def get(self, request, format=None):
         user = self.request.user
         try:
