@@ -63,6 +63,8 @@ function App() {
 
   useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
+  
+
   return (
 
     <div className="h-full">

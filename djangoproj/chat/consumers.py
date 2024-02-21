@@ -72,6 +72,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         self.user = self.scope["user"]
 
+
+        if self.user.is_anonymous:
+            await self.send(text_data=json.dumps({"disable_message": True}))
+            return
  
         
         await self.channel_layer.group_send(self.room_group_name, {
@@ -84,7 +88,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
 
         if self.user.is_anonymous:
-            await self.send(text_data=json.dumps({"error": "You are not logged in"}))
+            await self.send(text_data=json.dumps({"disable_message": True}))
             return
 
         message = event["message"]

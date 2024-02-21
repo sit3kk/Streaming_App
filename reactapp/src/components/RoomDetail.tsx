@@ -27,6 +27,10 @@ const RoomDetail: React.FC = () => {
 
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data);
+            if (data.disable_message) {
+                alert('You must be logged in to send messages.');
+                return;
+            }
             const formattedMessage = `${data.username}: ${data.message}`;
             setMessages((prevMessages) => [...prevMessages, formattedMessage]);
         };
