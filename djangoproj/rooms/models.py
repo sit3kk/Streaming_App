@@ -3,7 +3,7 @@ import string
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
-#from chat.models import Chat
+
 
 class Room(models.Model):
     room_id = models.CharField(primary_key=True, max_length=6, unique=True) 
@@ -12,6 +12,13 @@ class Room(models.Model):
     room_owner = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     room_description = models.TextField()
+    viewers = models.IntegerField(default=0)
+
+
+    def set_viewers(self, viewers):
+        self.viewers = viewers
+        self.save()
+        
 
     def save(self, *args, **kwargs):
         if not self.room_id:  

@@ -27,11 +27,7 @@ SECRET_KEY = 'django-insecure-_co-rwdqoh=q4pf8mwyiuh237z_^z-eo15seu=py_li8%5w2mt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
-
-
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +35,9 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    'daphne',
+
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +49,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
-    'rooms',
+    'rooms',    
+    'chat',
+    'channels',
 ]
 
 
@@ -87,7 +88,6 @@ CORS_ALLOWED_ORIGINS = [
     'https://960f-91-231-100-20.ngrok-free.app'
 ]
 
-CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
@@ -126,6 +126,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangoproj.wsgi.application'
+ASGI_APPLICATION = 'djangoproj.asgi.application'
+
 
 
 # Database
@@ -189,6 +191,19 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+
 
 
 
