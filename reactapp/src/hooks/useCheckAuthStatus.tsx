@@ -10,8 +10,8 @@ export const useCheckAuthStatus = (
     const sessionidFromCookie = document.cookie
     .split('; ')
     .find(row => row.startsWith('sessionid='))
-    ?.split('=')[1];
-    
+    ?.split('=')[1];    
+
     const checkAuthenticatedStatus = async () => {
       try {
         
@@ -27,8 +27,8 @@ export const useCheckAuthStatus = (
         });
         const data = await response.json();
 
+      
         if (data.isAuthenticated === 'success') {
-          console.log('Authenticated:', data);
           setIsAuthenticated(true);
           setCurrentUser({ username: data.user });
         } else {

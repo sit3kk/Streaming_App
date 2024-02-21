@@ -16,7 +16,6 @@ const ContentContainer: React.FC = () => {
             </Routes>
             </div>
         </BrowserRouter>
-
     );
 };
 
