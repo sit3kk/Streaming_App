@@ -9,16 +9,16 @@ const RoomDetail: React.FC = () => {
     const { id } = useParams();
     const [messages, setMessages] = useState<string[]>([]);
     const [currentMessage, setCurrentMessage] = useState('');
-   // const authContext = useContext(AuthContext);
+    // const authContext = useContext(AuthContext);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [currentUser, setCurrentUser] = useState<UserData | null>(null);
-   // const [notification, setNotification] = useState('');
+    // const [notification, setNotification] = useState('');
 
     useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
     useEffect(() => {
 
-    
+
         const ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${id}/`);
 
         ws.onopen = () => {
@@ -54,7 +54,7 @@ const RoomDetail: React.FC = () => {
             if (currentMessage !== '') {
                 ws.onopen = () => {
                     const messageData = {
-                        username: currentUser?.username, 
+                        username: currentUser?.username,
                         message: currentMessage
                     };
                     ws?.send(JSON.stringify(messageData));
@@ -65,35 +65,40 @@ const RoomDetail: React.FC = () => {
             alert('You must be logged in to send messages.');
         }
     };
-    
+
 
     return (
-        <div className="container mx-auto flex p-4 h-screen mt-16">
+        <div className="container mx-auto flex flex-col md:flex-row p-4 h-screen mt-16">
             <div className="flex flex-col md:flex-row flex-grow">
-                <div className="stream flex-grow bg-black">
+                {/* Stream Section */}
+                <div className="stream md:flex-grow md:w-9/12 h-screen bg-black">
+
                     <div className="text-white p-4">Stream place for room: {id}</div>
                 </div>
-                <div className="chat w-2.5/12 bg-neutral-800 text-white overflow-hidden fixed right-0 top-16 bottom-0">
+
+                {/* Chat Section */}
+                <div className="chat md:w-3/12 bg-neutral-800 text-white overflow-hidden md:fixed right-0 top-16 bottom-0">
                     <div className="chat-messages overflow-y-auto p-4 space-y-4 h-[70%]">
                         {messages.map((msg, index) => (
                             <div key={index} className="chat-message">{msg}</div>
                         ))}
                     </div>
                     <div className="chat-input p-4 h-[15%]">
-                <input
-                    type="text"
-                    placeholder="Your message..."
-                    className="w-full p-2 rounded bg-neutral-700 focus:outline-none focus:ring focus:border-blue-300"
-                    value={currentMessage}
-                    onChange={(e) => setCurrentMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                />
-                <button onClick={sendMessage} className="w-full mt-2 bg-purple-500 p-2 rounded hover:bg-purple-700">Send</button>
-              
-            </div>
+                        <input
+                            type="text"
+                            placeholder="Your message..."
+                            className="w-full p-2 rounded bg-neutral-700 focus:outline-none focus:ring focus:border-blue-300"
+                            value={currentMessage}
+                            onChange={(e) => setCurrentMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                        />
+                        <button onClick={sendMessage} className="w-full mt-2 bg-purple-500 p-2 rounded hover:bg-purple-700">Send</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+
     );
 };
 

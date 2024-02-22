@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 
-body, html, #root {
+body,
+html,
+#root {
     font-family: 'Nunito', sans-serif;
     background-color: black;
     height: 200vh;
@@ -89,13 +91,46 @@ body, html, #root {
 .transition-opacity {
     transition-property: opacity;
     transition-duration: 0.15s;
-  }
-  
-  .opacity-0 {
+}
+
+.opacity-0 {
     opacity: 0;
-  }
-  
-  .opacity-100 {
+}
+
+.opacity-100 {
     opacity: 1;
-  }
-  
+}
+
+
+.nav-dropdown-entering,
+.nav-dropdown-exiting {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.nav-dropdown-entering {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.nav-dropdown-entered {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.nav-dropdown-exiting {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.dropdown-enter {
+    display: block;
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+}
+
+.menu-icon:hover {
+    stroke: #9F7FEA;
+    cursor: pointer;
+    transition: stroke 0.3s ease;
+}
