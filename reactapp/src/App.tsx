@@ -10,6 +10,7 @@ import { AuthProvider } from './contexts/AuthContext.tsx';
 import LoadingScreen from "./components/LoadingScreen";
 import ContentContainer from "./components/ContentContainer.tsx";
 import Footer from "./components/Footer.tsx";
+import { BrowserRouter } from 'react-router-dom';
 
 
 
@@ -19,9 +20,8 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(true);
-
+ 
 
 
   useEffect(() => {
@@ -32,42 +32,38 @@ function App() {
   
 
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  // Call this function when the user logs in successfully
   const onLoginSuccess = (userData: UserData) => {
     setIsAuthenticated(true);
     setCurrentUser(userData);
     setIsLoginOpen(false);
   };
 
-  // Call this function when the user signs up successfully
+ 
   const onSignUpSuccess = () => {
     setIsRegisterOpen(false);
     setIsLoginOpen(true);
   };
 
-  // Function to handle the Sign Up click within the LoginForms
+ 
   const handleSignUpClick = () => {
     setIsLoginOpen(false);
     setIsRegisterOpen(true);
   };
 
-  // Function to handle the Login click within the Navbar
+
   const handleLoginClick = () => {
     setIsRegisterOpen(false);
     setIsLoginOpen(true);
   };
 
+
   useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
-  
 
   return (
 
     <div className="h-full">
+       <BrowserRouter>
       <AuthProvider>
       {isLoading ? (
           <LoadingScreen />
@@ -79,7 +75,8 @@ function App() {
               onLoginClick={handleLoginClick}
               isAuthenticated={isAuthenticated}
               currentUser={currentUser}
-              onToggleSidebar={toggleSidebar}
+           
+             
             />
 
             <ContentContainer/>
@@ -107,6 +104,7 @@ function App() {
         )}
       </AuthProvider>
       <Footer /> 
+      </BrowserRouter>
     </div>
     
   );

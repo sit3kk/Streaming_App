@@ -63,3 +63,5 @@ export const CSRFTokenProvider: React.FC<CSRFTokenProviderProps> = ({ children }
     </CSRFTokenContext.Provider>
   );
 };
+
+
