@@ -19,10 +19,9 @@ class CreateRoomView(APIView):
         room_name = data['room_name']
         room_description = data['room_description']
         room_owner = self.request.user
+        room_password = data.get('room_password')
+        private = data.get('private')
 
-        
-
-    
         try:
             if room_name and room_description:
                 
@@ -30,7 +29,9 @@ class CreateRoomView(APIView):
                     room_name=room_name, 
                     room_topic = room_topic, 
                     room_description=room_description, 
-                    room_owner=request.user
+                    room_owner=request.user,
+                    private=private,
+                    room_password=room_password
                     )
         
                 room.save()

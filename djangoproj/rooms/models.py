@@ -7,12 +7,14 @@ from django.utils.crypto import get_random_string
 
 class Room(models.Model):
     room_id = models.CharField(primary_key=True, max_length=6, unique=True) 
-    room_name = models.CharField(max_length=100, default='None')
+    room_name = models.CharField(max_length=100, unique=True) 
     room_topic = models.CharField(max_length=100,default='None')
     room_owner = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     room_description = models.TextField()
     viewers = models.IntegerField(default=0)
+    private = models.BooleanField(default=False)
+    room_password = models.CharField(max_length=100, default='None')
 
 
     def set_viewers(self, viewers):

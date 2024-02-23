@@ -1264,10 +1264,10 @@
   resolved "https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
-"@esbuild/win32-x64@0.19.12":
+"@esbuild/linux-x64@0.19.12":
   version "0.19.12"
-  resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.19.12.tgz"
-  integrity sha512-T1QyPSDCyMXaO3pzBkF96E8xMkiRYbUEZADd29SyPGabqxMViNoii+NcK7eWJAEoU6RZyEm5lVSIjTmcdoB9HA==
+  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.19.12.tgz"
+  integrity sha512-B71g1QpxfwBvNrfyJdVDexenDIt1CiDN1TIXLbhOw0KhJzE78KIFGX6OJ9MrtC0oOqMWf+0xop4qEU8JrJTwCg==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
@@ -1693,10 +1693,15 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rollup/rollup-win32-x64-msvc@4.12.0":
+"@rollup/rollup-linux-x64-gnu@4.12.0":
   version "4.12.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.12.0.tgz"
-  integrity sha512-ZYmr5mS2wd4Dew/JjT0Fqi2NPB/ZhZ2VvPp7SmvPZb4Y1CG/LRcS6tcRo2cYU7zLK5A7cdbhWnnWmUjoI4qapg==
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.12.0.tgz"
+  integrity sha512-TenQhZVOtw/3qKOPa7d+QgkeM6xY0LtwzR8OplmyL5LrgTWIXpTQg2Q2ycBf8jm+SFW2Wt/DTn1gf7nFp3ssVA==
+
+"@rollup/rollup-linux-x64-musl@4.12.0":
+  version "4.12.0"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.12.0.tgz"
+  integrity sha512-LfFdRhNnW0zdMvdCb5FNuWlls2WbbSridJvxOvYWgSBOYZtgBfW9UGNJG//rwMqTX1xQE9BAodvMH9tAusKDUw==
 
 "@rushstack/eslint-patch@^1.1.0":
   version "1.7.2"
@@ -1835,10 +1840,15 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@swc/core-win32-x64-msvc@1.4.1":
+"@swc/core-linux-x64-gnu@1.4.1":
   version "1.4.1"
-  resolved "https://registry.npmjs.org/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.4.1.tgz"
-  integrity sha512-lu4h4wFBb/bOK6N2MuZwg7TrEpwYXgpQf5R7ObNSXL65BwZ9BG8XRzD+dLJmALu8l5N08rP/TrpoKRoGT4WSxw==
+  resolved "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.4.1.tgz"
+  integrity sha512-AFMQlvkKEdNi1Vk2GFTxxJzbICttBsOQaXa98kFTeWTnFFIyiIj2w7Sk8XRTEJ/AjF8ia8JPKb1zddBWr9+bEQ==
+
+"@swc/core-linux-x64-musl@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.4.1.tgz"
+  integrity sha512-QX2MxIECX1gfvUVZY+jk528/oFkS9MAl76e3ZRvG2KC/aKlCQL0KSzcTSm13mOxkDKS30EaGRDRQWNukGpMeRg==
 
 "@swc/core@^1.3.107":
   version "1.4.1"
