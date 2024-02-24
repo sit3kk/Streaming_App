@@ -8,7 +8,7 @@ html,
 #root {
     font-family: 'Nunito', sans-serif;
     background-color: black;
-    height: 200vh;
+    height: 100vh;
 }
 
 
@@ -134,3 +134,26 @@ html,
     cursor: pointer;
     transition: stroke 0.3s ease;
 }
+
+
+.animated-text {
+    animation: slideText 10s linear infinite; 
+    white-space: nowrap; 
+}
+
+@keyframes slideText {
+    0% {
+        transform: translateX(-100vw);
+    }
+    100% {
+        transform: translateX(calc(100% - 200px)); 
+    }
+}
+
+
+@media (max-width: 640px) {
+    .pagination-container {
+        padding-bottom: 2rem; 
+    }
+}
+
