@@ -9,7 +9,7 @@ import { UserData } from './types/UserData';
 import { AuthProvider } from './contexts/AuthContext.tsx';
 import LoadingScreen from "./components/LoadingScreen";
 import ContentContainer from "./components/ContentContainer.tsx";
-import Footer from "./components/Footer.tsx";
+
 import { BrowserRouter } from 'react-router-dom';
 
 
@@ -103,7 +103,7 @@ function App() {
           
         )}
       </AuthProvider>
-      <Footer /> 
+    
       </BrowserRouter>
     </div>
     
