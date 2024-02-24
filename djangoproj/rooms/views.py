@@ -8,11 +8,15 @@ from .serializers import RoomSerializer
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny
+from rest_framework import permissions
 
 
-@method_decorator(login_required, name='dispatch')
+
 @method_decorator(csrf_protect, name='dispatch')
 class CreateRoomView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+
     def post(self, request, format=None):
         data = self.request.data
         room_topic = data['room_topic']

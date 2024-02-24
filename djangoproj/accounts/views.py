@@ -3,10 +3,12 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from django.contrib import auth
 from rest_framework.response import Response
-#from .serializers import UserSerializer
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny
+from django.core.files.storage import default_storage
+from rest_framework import status
+from .models import Profile
 
 
 
@@ -78,6 +80,9 @@ class LoginView(APIView):
             return Response({ 'error': 'Something went wrong when logging in' }, status=401)
 
 class LogoutView(APIView):
+
+    permission_classes = (permissions.IsAuthenticated, )
+
     def post(self, request, format=None):
         try:
             auth.logout(request)
@@ -103,3 +108,26 @@ class DeleteAccountView(APIView):
             return Response({ 'success': 'User deleted successfully' })
         except:
             return Response({ 'error': 'Something went wrong when trying to delete user' })
+        
+class SetPhotoAccountView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    
+
+    def post(self, request, format=None):
+        user = request.user
+        file = request.FILES.get('photo') 
+        if not file:
+            return Response({'error': 'No photo provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+      
+        try:
+            profile = user.profile
+        except Profile.DoesNotExist:
+            profile = Profile(user=user)
+        
+        filename = default_storage.save(f'profile_photos/{user.username}/{file.name}', file)
+        profile.photo = filename
+        profile.save()
+
+        return Response({'success': 'Photo set successfully'}, status=status.HTTP_200_OK)
