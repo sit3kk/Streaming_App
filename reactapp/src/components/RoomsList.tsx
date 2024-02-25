@@ -127,7 +127,7 @@ const RoomsList: React.FC = () => {
                     ))}
                 </ul>
             </div>
-            <div className="mt-4 pb-4 self-center fixed bottom-5 w-full">
+            <div className="mt-4 pb-4 self-center bottom-20 w-full">
                 {totalPages > 0 && (
                     <div className="flex justify-center">
                         {pageNumbers.map((number, index) =>

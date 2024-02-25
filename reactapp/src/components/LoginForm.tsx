@@ -50,6 +50,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSignUpClick, onLoginSu
         body: JSON.stringify({ username, password }),
         credentials: "include",
       });
+
+  
   
       if (!response.ok) {
         throw new Error("Network response was not ok");
