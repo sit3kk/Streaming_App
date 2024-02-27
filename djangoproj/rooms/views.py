@@ -76,7 +76,55 @@ class ListRoomsView(APIView):
         try:
             rooms = Room.objects.all().order_by('-created_at')
             serializer = RoomSerializer(rooms, many=True)
+
+
             return Response(serializer.data, status=200)
         except Exception as e:
             return Response({ 'error': 'Something went wrong when retrieving rooms', 'details': str(e) }, status=500)
+        
+
+
+class JoinToRoomView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = request.data
+
+        username = request.user.username
+
+
+        id = data.get('room_id')
+        password = data.get('room_password')
+
+ 
+        try:
+            room = Room.objects.get(room_id=id)
+            room_owner = room.room_owner
+
+            if room.private:
+                if room.room_password == password:
+               
+                    is_owner = request.user.is_authenticated and room_owner == request.user.username
+
+                  
+                    user_status = 'authenticated' if request.user.is_authenticated else 'anonymous'
+                    return Response({
+                        'success': f'{user_status.capitalize()} user {username} joined room',
+                        'is_owner': is_owner
+                    }, status=200)
+                else:
+                    return Response({'error': 'Password is incorrect'}, status=400)
+            else:
+       
+                is_owner = request.user.is_authenticated and room_owner == request.user
+                user_status = 'authenticated' if request.user.is_authenticated else 'anonymous'
+                return Response({
+                    'success': f'{user_status.capitalize()} user {username} joined room',
+                    'is_owner': is_owner
+                }, status=200)
+        except Room.DoesNotExist:
+            return Response({'error': 'Room does not exist'}, status=404)
+        except Exception as e:
+            return Response({'error': 'Something went wrong when joining room'}, status=400)
+
 

@@ -6,4 +6,5 @@ export interface Room {
     room_owner: string;
     created_at: string;
     viewers: number;
+    private: boolean;
   }

@@ -17,7 +17,7 @@ const RoomHost: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const mediaStream = useRef<MediaStream | null>(null);
 
-
+   
     useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
 
@@ -130,7 +130,7 @@ const RoomHost: React.FC = () => {
                 messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
             }
         } catch (error) {
-            console.error('Nie udało się przewinąć do najnowszych wiadomości:', error);
+            console.error('Failed to scroll to the latest messages:', error);
         }
     }, [messages]);
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Room } from "../types/Room";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import PasswordPrompt from "./PasswordPrompt";
 
 const RoomsList: React.FC = () => {
     const [rooms, setRooms] = useState<Room[]>([]);
@@ -8,6 +10,9 @@ const RoomsList: React.FC = () => {
     const [roomsPerPage] = useState(9);
     const [loading, setLoading] = useState(false);
     const [fadeEffect, setFadeEffect] = useState(false);
+    const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+    const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchRooms = async () => {
@@ -25,11 +30,14 @@ const RoomsList: React.FC = () => {
                     }
                 );
 
+           
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data: Room[] = await response.json();
+         
                 setRooms(data);
             } catch (error) {
                 console.error("Error:", error);
@@ -46,6 +54,24 @@ const RoomsList: React.FC = () => {
         const sortedRooms = [...rooms].sort((a, b) => b.viewers - a.viewers);
         setRooms(sortedRooms);
         setLoading(false);
+    };
+
+
+    const handleRoomSelect = (room: Room) => {
+        if (room.private) {
+            setSelectedRoomId(room.room_id);
+            setShowPasswordPrompt(true);
+        } else {
+
+            navigate(`/room/${room.room_id}`);
+            
+            
+        }
+    };
+
+    const closePasswordPrompt = () => {
+        setShowPasswordPrompt(false);
+        setSelectedRoomId(null);
     };
 
 
@@ -77,10 +103,11 @@ const RoomsList: React.FC = () => {
 
     return (
         <div className="flex flex-col w-3/4 h-full justify-between items-center bg-neutral-900 mt-16">
+            
+
             <div
                 className={`max-w-screen-lg w-full h-full mx-auto bg-neutral-900 rounded-lg p-8 flex flex-col ${loading ? 'opacity-50' : 'opacity-100'} ${fadeEffect ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
             >
-
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold text-white mb-4">All Rooms</h2>
                     <button
@@ -97,9 +124,10 @@ const RoomsList: React.FC = () => {
                         <li
                             key={room.room_id}
                             className="flex flex-col justify-between bg-neutral-800 rounded-lg p-5 hover:bg-gray-600 transition duration-150 ease-in-out h-full transform hover:-translate-y-1 hover:scale-105"
+                            onClick={() => handleRoomSelect(room)}
                         >
-                            <Link
-                                to={`/room/${room.room_id}`}
+                            <div
+                           
                                 className="text-white flex flex-col justify-between h-full"
                             >
                                 <div>
@@ -120,12 +148,17 @@ const RoomsList: React.FC = () => {
                                     </span>
                                     <span className="text-gray-300 text-xs">
                                         {room.viewers} watching now
+                                        {room.private == true ? (" (Private)") : ("")}
                                     </span>
                                 </div>
-                            </Link>
+                            </div>
                         </li>
                     ))}
                 </ul>
+                {loading && <div>Loading...</div>}
+            {showPasswordPrompt && selectedRoomId && (
+                <PasswordPrompt roomId={selectedRoomId} onClose={closePasswordPrompt} />
+            )}
             </div>
             <div className="mt-4 pb-4 self-center bottom-20 w-full">
                 {totalPages > 0 && (
