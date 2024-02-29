@@ -19,11 +19,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_group_name = f"chat_{self.room_name}"
         self.user = self.scope["user"] 
 
+
+     
+
         
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
         await self.accept()
+
+
+        initial_user_count = len(self.active_users)
+        
 
         if self.user not in self.active_users:
             self.active_users[self.user] = 1
@@ -41,14 +48,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         else:
             self.active_users[self.user] += 1
 
+        if len(self.active_users) != initial_user_count:
+            await self.update_viewers_list()
+
         await self.set_viewers()
 
 
       
     async def disconnect(self, close_code):
+        
 
+        initial_user_count = len(self.active_users)
 
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        
 
         if self.active_users[self.user] == 1:
             del self.active_users[self.user]
@@ -64,6 +76,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         else:
             self.active_users[self.user] -= 1
 
+        if len(self.active_users) != initial_user_count:
+            await self.update_viewers_count()
+
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         await self.set_viewers()
 
     async def receive(self, text_data):
@@ -109,4 +125,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             print(e)
 
+
+    async def update_viewers_list(self):
+  
+        viewers_list = [user.username for user in self.active_users.keys()]  
+
+        viewers_list_message = {
+        "type": "viewers_list",
+        "viewers_list": viewers_list,
+    }
+
+        await self.channel_layer.group_send(self.room_group_name, viewers_list_message)
+
+
+
+
+    
+    async def viewers_list(self, event):
+  
+        await self.send(text_data=json.dumps({
+            'type': 'viewers_list',
+            'viewers_list': event['viewers_list']
+        }))
         
