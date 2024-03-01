@@ -20,8 +20,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user = self.scope["user"] 
 
 
+      
      
-
         
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -51,6 +51,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if len(self.active_users) != initial_user_count:
             await self.update_viewers_list()
 
+
+   
         await self.set_viewers()
 
 
@@ -77,7 +79,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.active_users[self.user] -= 1
 
         if len(self.active_users) != initial_user_count:
-            await self.update_viewers_count()
+            await self.update_viewers_list()
 
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         await self.set_viewers()
