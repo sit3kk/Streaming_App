@@ -128,3 +128,26 @@ class JoinToRoomView(APIView):
             return Response({'error': 'Something went wrong when joining room'}, status=400)
 
 
+
+
+class CheckIfHostView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+
+    def post(self, request, format=None):
+
+        try:
+            data = request.data
+            room_id = data.get('room_id')
+            room = Room.objects.get(room_id=room_id)
+            room_owner = room.room_owner
+       
+            is_owner = str(room_owner) == str(request.user.username)
+            return Response({'is_owner': is_owner}, status=200)
+        except Room.DoesNotExist:
+            return Response({'error': 'Room does not exist'}, status=404)
+        except Exception as e:
+            return Response({'error': 'Something went wrong when checking if user is host'}, status=400)
+
+
+

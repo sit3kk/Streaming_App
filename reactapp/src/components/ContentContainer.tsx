@@ -5,9 +5,9 @@ import RoomsList from './RoomsList';
 //import RoomDetail from './RoomDetail';
 
 import RoomHost from './RoomHost.jsx';
-import RoomCreator from './RoomCreator';
 import ProfileDetails from './ProfileDetails';
-
+import RoomCreator from './RoomCreator.tsx';
+//import RoomViewer from './StreamingRoom.jsx';
 
 
 
@@ -20,7 +20,7 @@ const ContentContainer: React.FC = () => {
             <Routes>
                 <Route path="/" element={<RoomsList />} />
                 <Route path="/room/:id" element={<RoomHost />} />
-                <Route path="/RoomCreator" element={<RoomCreator />} />
+                <Route path="/RoomCreator" element={<RoomCreator/>} />
                 <Route path="Profile" element={< ProfileDetails />} />
             </Routes>
             </div>
