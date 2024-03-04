@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { UserData } from '../types/UserData';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const useCheckAuthStatus = (
   setIsAuthenticated: (isAuthenticated: boolean) => void,
@@ -33,7 +35,7 @@ export const useCheckAuthStatus = (
           setCurrentUser({ username: data.user });
         } else {
           setIsAuthenticated(false);
-          setCurrentUser(null);
+          setCurrentUser({ username: uuidv4()} );
         }
       } catch (error) {
         console.error("Error checking authenticated status:", error);
