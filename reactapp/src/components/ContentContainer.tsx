@@ -4,22 +4,29 @@ import { Routes, Route } from 'react-router-dom';
 import RoomsList from './RoomsList';
 //import RoomDetail from './RoomDetail';
 
-import RoomHost from './RoomHost.jsx';
+import RoomStream from './RoomStream.jsx';
 import ProfileDetails from './ProfileDetails';
 import RoomCreator from './RoomCreator.tsx';
-//import RoomViewer from './StreamingRoom.jsx';
+import { UserData } from '../types/UserData.tsx';
+
+
+interface ContentContainerProps {
+    isAuthenticated: boolean;
+    currentUser: UserData | null;
+  }
 
 
 
-
-
-const ContentContainer: React.FC = () => {
+const ContentContainer: React.FC<ContentContainerProps> = ({ isAuthenticated, currentUser }) => {
     return (
-       
+            
             <div className="min-h-screen flex flex-col justify-start items-center bg-neutral-900">
             <Routes>
                 <Route path="/" element={<RoomsList />} />
-                <Route path="/room/:id" element={<RoomHost />} />
+                <Route path="/room/:id" element={<RoomStream 
+                isAuthenticated={isAuthenticated}
+                currentUser={currentUser}
+                />} />
                 <Route path="/RoomCreator" element={<RoomCreator/>} />
                 <Route path="Profile" element={< ProfileDetails />} />
             </Routes>

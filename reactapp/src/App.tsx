@@ -59,7 +59,6 @@ function App() {
 
   useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
-
   return (
 
     <div className="h-full">
@@ -79,7 +78,10 @@ function App() {
              
             />
 
-            <ContentContainer/>
+            <ContentContainer 
+              isAuthenticated={isAuthenticated}
+              currentUser={currentUser}
+            />
           
 
               {isRegisterOpen && (
