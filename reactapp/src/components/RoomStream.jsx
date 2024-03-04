@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useCheckAuthStatus } from '../hooks/useCheckAuthStatus';
 import { Client, LocalStream } from 'ion-sdk-js';
 import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl';
 
@@ -9,23 +8,18 @@ import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl';
 
 
 
-const RoomStream = () => {
+const RoomStream = ({ isAuthenticated, currentUser }) => {
     const { id } = useParams();
     const [messages, setMessages] = useState([]);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [currentUser, setCurrentUser] = useState(null);
     const [currentMessage, setCurrentMessage] = useState('');
     const [viewersList, setViewersList] = useState([]);
-
     const [isHost, setIsHost] = useState(false);
 
-
-
-    useCheckAuthStatus(setIsAuthenticated, setCurrentUser);
 
     useEffect(() => {
 
         if (isAuthenticated && currentUser) {
+
 
             (async () => {
                 try {
@@ -45,11 +39,16 @@ const RoomStream = () => {
                         const data = await response.json();
                         setIsHost(data.is_owner);
                     }
+
+
                 } catch (error) {
                     console.error('Failed to check if the user is the host:', error);
                 }
             })();
         }
+
+
+
 
 
     }, [id, isAuthenticated, currentUser]);
@@ -59,8 +58,6 @@ const RoomStream = () => {
 
 
         const ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${id}/`);
-
-
 
         ws.onopen = () => {
             console.log('WebSocket Connected');
@@ -156,8 +153,10 @@ const RoomStream = () => {
     //const [codec, setCodec] = useState('vp8');
     //const [frameRate, setFrameRate] = useState(60);
 
+    const [streamLive, setStreamLive] = useState(true);
 
-   
+
+
 
     useEffect(() => {
 
@@ -174,21 +173,25 @@ const RoomStream = () => {
         signalRef.current.onopen = () => clientRef.current.join(id);
 
 
-  
+        setStreamLive(true);
         if (!isHost) {
             clientRef.current.ontrack = (track, stream) => {
-          
+
                 track.onunmute = () => {
-   
+                    
+                    console.log("Stream is live.")
+                    
+
                     if (subVideo.current) {
-                     
+
                         subVideo.current.srcObject = stream;
                         subVideo.current.autoplay = true;
                         subVideo.current.muted = false;
-        
+
+
                         stream.onremovetrack = () => {
                             if (subVideo.current) {
-                               
+
                                 subVideo.current.srcObject = null;
                             }
                         };
@@ -199,8 +202,10 @@ const RoomStream = () => {
             };
         }
 
-      
-    
+       
+
+
+
 
     }, [isHost, id]);
 
@@ -217,6 +222,7 @@ const RoomStream = () => {
     };
 
     const stopStream = () => {
+
         const stream = pubVideo.current.srcObject;
         if (stream) {
             const tracks = stream.getTracks();
@@ -238,6 +244,8 @@ const RoomStream = () => {
 
     const start = (event) => {
         if (event) {
+         
+         
             LocalStream.getUserMedia({
                 resolution: 'qhd',
                 audio: true,
@@ -251,6 +259,7 @@ const RoomStream = () => {
                 clientRef.current.publish(media);
             }).catch(console.error);
         } else {
+            
             LocalStream.getDisplayMedia({
                 resolution: 'qhd',
                 video: true,
@@ -267,7 +276,7 @@ const RoomStream = () => {
         }
     }
 
-      
+
 
 
     return (
@@ -293,7 +302,7 @@ const RoomStream = () => {
 
                 {isHost ? (
                     <>
-                        <video id="pubVideo" className="bg-black" controls ref={pubVideo}></video>
+                        <video id="pubVideo" className="bg-black w-full" controls ref={pubVideo}></video>
                         <div>
 
                         </div>
@@ -317,7 +326,25 @@ const RoomStream = () => {
                     </>
                 ) :
                     (
-                        <video id="subVideo" className="bg-black" controls ref={subVideo}></video>
+                        <>
+                            {streamLive ? (
+                                <video id="subVideo" className="bg-black w-full" controls ref={subVideo}></video>
+                            ) :
+                                (
+                                    <div className="flex items-center justify-center h-full bg-neutral-900">
+                                        <div className="text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 20H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2h-5.172m-2.828 0a2 2 0 100-4 2 2 0 000 4zm2.828-4V4m0 0L5 20m9-16l5 16" />
+                                            </svg>
+                                            <p className="text-white text-2xl mt-4">Stream Offline</p>
+                                        </div>
+                                    </div>
+
+
+                                )}
+
+                        </>
+
                     )
                 }
 
