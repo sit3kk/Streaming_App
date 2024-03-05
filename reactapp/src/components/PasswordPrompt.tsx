@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 interface PasswordPromptProps {
   roomId: string;
+  username: string;
+ 
 
   onClose: () => void;
 }
 
-const PasswordPrompt: React.FC<PasswordPromptProps> = ({ roomId, onClose }) => {
+const PasswordPrompt: React.FC<PasswordPromptProps> = ({ roomId, username, onClose}) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,20 +32,36 @@ const PasswordPrompt: React.FC<PasswordPromptProps> = ({ roomId, onClose }) => {
   const handlePasswordSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/rooms/join_room', {
+      const response = await fetch('http://127.0.0.1:8000/api/rooms/authenticate_room', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           "sessionid": document.cookie.split('; ').find(row => row.startsWith('sessionid='))?.split('=')[1] || "",
           "X-CSRFToken": document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || "",
+
+
         },
-        body: JSON.stringify({ room_id: roomId, room_password: password }),
+        body: JSON.stringify({ room_id: roomId, room_password: password, username: username}),
         credentials: 'include',
       });
+
+   
+
+     
+      
       if (!response.ok) {
         throw new Error('Failed to join room');
       }
+
+      const data = await response.json();
+      const room_token = data.room_token as string;
+
+     
+
+      const roomToken = `room_${roomId}_token`;
+      localStorage.setItem(roomToken, room_token)
+   
 
       naviagate(`/room/${roomId}`)
 
