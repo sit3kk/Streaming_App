@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
+from cryptography.fernet import Fernet
+
 
 
 
@@ -83,7 +85,7 @@ class ListRoomsView(APIView):
             return Response({ 'error': 'Something went wrong when retrieving rooms', 'details': str(e) }, status=500)
         
 
-
+'''
 class JoinToRoomView(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -127,6 +129,77 @@ class JoinToRoomView(APIView):
         except Exception as e:
             return Response({'error': 'Something went wrong when joining room'}, status=400)
 
+'''
+
+key= Fernet.generate_key()
+
+cipher_suite = Fernet(key)
+
+class KeyHolder:
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+class AuthenticateRoomView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = request.data
+        username = data.get('username')
+        room_id = data.get('room_id')
+        room_password = data.get('room_password')
+
+
+        try:
+            room = Room.objects.get(room_id=room_id)
+            
+            if room.private == False:
+                return Response({'room_token': 'None'}, status=status.HTTP_200_OK)
+
+            elif room.private == True and room.room_password == room_password:
+        
+                room_id_and_username = f"{room.room_id},{username}".encode('utf-8')
+                encrypted_data = KeyHolder.cipher_suite.encrypt(room_id_and_username)
+
+                return Response({'room_token': encrypted_data.decode('utf-8')}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Wrong password'}, status=status.HTTP_400_BAD_REQUEST)
+        except Room.DoesNotExist:
+            return Response({'error': 'Room not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class RoomAccessView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = request.data
+        room_id = data.get('room_id')
+        username = data.get('username')
+        room_token = data.get('room_token')
+
+
+        try:
+
+            room = Room.objects.get(room_id=room_id)
+
+            if room.private == False:
+                return Response({'room_token': 'None'}, status=status.HTTP_200_OK)
+            
+            if not room_token:
+                return Response({'error': 'Room token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            room_token_bytes = room_token.encode('utf-8')
+            decrypted_data = KeyHolder.cipher_suite.decrypt(room_token_bytes).decode('utf-8')
+            encoded_room_id, encoded_username = decrypted_data.split(',')
+
+            
+            if room.room_id == encoded_room_id and encoded_username == username:
+                return Response({'message': 'Access granted', 'room_id' : room.room_id, 'username' : username}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
+
+        except Room.DoesNotExist:
+            return Response({'error': 'Room does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': f'Something went wrong when authenticating room: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
