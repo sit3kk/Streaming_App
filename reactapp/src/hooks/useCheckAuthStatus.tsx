@@ -35,6 +35,7 @@ export const useCheckAuthStatus = (
           setCurrentUser({ username: data.user });
         } else {
           setIsAuthenticated(false);
+
           setCurrentUser({ username: uuidv4()} );
         }
       } catch (error) {
