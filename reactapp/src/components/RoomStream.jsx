@@ -2,7 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client, LocalStream } from 'ion-sdk-js';
 import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl';
-
+import camera from '../icons/camera.png';
+import shareScreen from '../icons/share-screen.png';
+import microphone from '../icons/microphone.png';
+import microphoneMuted from '../icons/microphone-muted.png';
+import stopRecording from '../icons/stop-recording.png';
 
 
 
@@ -66,7 +70,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data);
             if (data.disable_message) {
-                alert('You must be logged in to send messages.');
+
                 return;
             }
 
@@ -149,11 +153,9 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
 
     const [isMuted, setIsMuted] = useState(false);
-    //const [resolution, setResolution] = useState('vga');
-    //const [codec, setCodec] = useState('vp8');
-    //const [frameRate, setFrameRate] = useState(60);
 
-    const [streamLive, setStreamLive] = useState(true);
+
+    const [streamLive, setStreamLive] = useState(false);
 
 
 
@@ -173,14 +175,12 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
         signalRef.current.onopen = () => clientRef.current.join(id);
 
 
-        setStreamLive(true);
         if (!isHost) {
             clientRef.current.ontrack = (track, stream) => {
 
                 track.onunmute = () => {
-                    
-                    console.log("Stream is live.")
-                    
+
+                    setStreamLive(true);
 
                     if (subVideo.current) {
 
@@ -196,30 +196,31 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
                             }
                         };
                     } else {
-                        console.log("subVideo.current jest null.");
+                        console.log("subVideo.current is null.");
                     }
                 };
             };
         }
 
-       
-
-
-
-
-    }, [isHost, id]);
+    }, [isHost, id, streamLive, ]);
 
 
     const toggleMute = () => {
-        const stream = pubVideo.current.srcObject;
+        const stream = pubVideo.current?.srcObject;
         if (stream) {
             const audioTracks = stream.getAudioTracks();
-            audioTracks.forEach((track) => {
-                track.enabled = !isMuted;
-            });
-            setIsMuted(!isMuted);
+            if (audioTracks.length > 0) {
+                const isCurrentlyMuted = !audioTracks[0].enabled;
+                audioTracks.forEach((track) => {
+                    track.enabled = !track.enabled;
+                });
+                setIsMuted(isCurrentlyMuted);
+            } else {
+                console.error('No audio tracks found in the stream.');
+            }
         }
     };
+
 
     const stopStream = () => {
 
@@ -236,44 +237,51 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
     const updateStream = (isCamera) => {
 
         stopStream();
-
-
         start(isCamera);
     };
 
 
+
+
     const start = (event) => {
         if (event) {
-         
-         
+
             LocalStream.getUserMedia({
-                resolution: 'qhd',
+                resolution: 'fhd',
                 audio: true,
-                codec: "h264",
+                video: true,
+                codec: 'vp8',
+                simulcast: true,
                 frameRate: 60,
             }).then((media) => {
                 pubVideo.current.srcObject = media;
                 pubVideo.current.autoplay = true;
                 pubVideo.current.controls = true;
-                pubVideo.current.muted = true;
+                pubVideo.current.muted = true
                 clientRef.current.publish(media);
             }).catch(console.error);
+
+
         } else {
-            
+
             LocalStream.getDisplayMedia({
-                resolution: 'qhd',
+                resolution: 'fhd',
                 video: true,
                 audio: true,
-                codec: "h264",
+                codec: 'vp8',
+                simulcast: true,
                 frameRate: 60,
+
             }).then((media) => {
                 pubVideo.current.srcObject = media;
                 pubVideo.current.autoplay = true;
                 pubVideo.current.controls = true;
-                pubVideo.current.muted = true;
+                pubVideo.current.muted = true
                 clientRef.current.publish(media);
             }).catch(console.error);
+
         }
+
     }
 
 
@@ -298,54 +306,74 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
             </div>
 
 
-            <div className="flex-grow h-full bg-black">
+            <div className="flex-grow h-full bg-neutral-900">
 
                 {isHost ? (
-                    <>
-                        <video id="pubVideo" className="bg-black w-full" controls ref={pubVideo}></video>
-                        <div>
+                    <div className="flex flex-col justify-between h-full">
+                        {streamLive ? (
+                            <video id="pubVideo" className="bg-black w-full h-full object-cover" controls ref={pubVideo}></video>
 
-                        </div>
-                        <header>
-                            <button className="bg-blue-500 px-4 py-2 text-white rounded-lg mr-5" onClick={() => start(true)}>
-                                Publish Camera
+                        ) : (
+                            <div className="flex-grow flex items-center justify-center bg-neutral-900">
+                                <div className="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 20H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2h-5.172m-2.828 0a2 2 0 100-4 2 2 0 000 4zm2.828-4V4m0 0L5 20m9-16l5 16" />
+                                    </svg>
+                                    <p className="text-white text-2xl mt-4">Stream Offline</p>
+                                </div>
+                            </div>
+                        )}
+                        <header className="bg-neutral-800 flex justify-center p-4 space-x-4 ">
+                            
+                            <button className="hover:bg-gray-700 p-2 rounded-lg flex items-center justify-center shadow-lg " onClick={() => {
+                                setStreamLive(true) 
+                                setTimeout(() => {
+                                    start(true);
+                                    updateStream(true);
+                                }, 100);
+                                }}>
+                                <img src={camera} alt="Publish Camera" className="w-6 h-6" />
                             </button>
-                            <button className="bg-green-500 px-4 py-2 text-white rounded-lg" onClick={() => start(false)}>
-                                Publish Screen
+                            <button className="hover:bg-gray-700 p-2 rounded-lg flex items-center justify-center shadow-lg" onClick={() => {
+                                 setStreamLive(true )
+                                 setTimeout(() => {
+                                    start(false);
+                                    updateStream(false);
+                                 
+                                 }, 100);
+                            }}>
+                                <img src={shareScreen} alt="Publish Screen" className="w-6 h-6" />
                             </button>
-                            <button className="bg-yellow-500 px-4 py-2 text-white rounded-lg mr-5" onClick={toggleMute}>
-                                {isMuted ? 'Unmute' : 'Mute'} Microphone
+                            <button className="hover:bg-gray-700 p-2 rounded-lg flex items-center justify-center shadow-lg" onClick={toggleMute}>
+                                <img src={isMuted ? microphone : microphoneMuted} alt={isMuted ? 'Mute' : 'Unmute'} className="w-6 h-6" />
                             </button>
-                            <button className="bg-red-500 px-4 py-2 text-white rounded-lg" onClick={stopStream}>
-                                Stop Stream
+                            <button className="hover:bg-gray-700 p-2 rounded-lg flex items-center justify-center shadow-lg" onClick={stopStream}>
+                                <img src={stopRecording} alt="Stop Stream" className="w-6 h-6" />
                             </button>
-
-                            <button className="bg-purple-500 px-4 py-2 text-white rounded-lg" onClick={() => updateStream(true)}>Update Camera</button>
                         </header>
 
-                    </>
+
+
+                    </div>
+
                 ) :
-                    (
-                        <>
-                            {streamLive ? (
-                                <video id="subVideo" className="bg-black w-full" controls ref={subVideo}></video>
-                            ) :
-                                (
-                                    <div className="flex items-center justify-center h-full bg-neutral-900">
-                                        <div className="text-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 20H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2h-5.172m-2.828 0a2 2 0 100-4 2 2 0 000 4zm2.828-4V4m0 0L5 20m9-16l5 16" />
-                                            </svg>
-                                            <p className="text-white text-2xl mt-4">Stream Offline</p>
-                                        </div>
-                                    </div>
+                <div className="flex flex-col justify-between h-full">
+                {streamLive ? (
+                    <video id="pubVideo" className="bg-black w-full h-full object-cover" controls ref={pubVideo}></video>
 
-
-                                )}
-
-                        </>
-
-                    )
+                ) : (
+                    <div className="flex-grow flex items-center justify-center bg-neutral-900">
+                        <div className="text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 20H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2h-5.172m-2.828 0a2 2 0 100-4 2 2 0 000 4zm2.828-4V4m0 0L5 20m9-16l5 16" />
+                            </svg>
+                            <p className="text-white text-2xl mt-4">Stream Offline</p>
+                        </div>
+                    </div>
+                )}
+                
+            
+            </div>
                 }
 
 
@@ -383,10 +411,6 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
             </div>
         </div>
     );
-
-
-
-
 
 
 
