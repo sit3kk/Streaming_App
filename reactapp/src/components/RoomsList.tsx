@@ -4,7 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 import PasswordPrompt from "./PasswordPrompt";
 
-const RoomsList: React.FC = () => {
+
+interface PasswordPromptProps {
+    username: string;
+  
+  }
+
+const RoomsList: React.FC<PasswordPromptProps> = ({username}) => {
     const [rooms, setRooms] = useState<Room[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [roomsPerPage] = useState(9);
@@ -13,6 +19,7 @@ const RoomsList: React.FC = () => {
     const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
     const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         const fetchRooms = async () => {
@@ -47,6 +54,7 @@ const RoomsList: React.FC = () => {
         };
 
         fetchRooms();
+     
     }, []);
 
     const sortRooms = () => {
@@ -157,7 +165,7 @@ const RoomsList: React.FC = () => {
                 </ul>
                 {loading && <div>Loading...</div>}
             {showPasswordPrompt && selectedRoomId && (
-                <PasswordPrompt roomId={selectedRoomId} onClose={closePasswordPrompt} />
+                <PasswordPrompt roomId={selectedRoomId} username={username} onClose={closePasswordPrompt} />
             )}
             </div>
             <div className="mt-4 pb-4 self-center bottom-20 w-full">
