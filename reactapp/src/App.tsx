@@ -4,12 +4,11 @@ import { CSRFTokenProvider } from './components/CSRFToken';
 import RegistrationForm from "./components/RegistrationForm";
 import LoginForm from "./components/LoginForm";
 import "./index.css";
-import { useCheckAuthStatus } from './hooks/useCheckAuthStatus.tsx';
+import { useCheckAuthStatus } from './hooks/useCheckAuthStatus';
 import { UserData } from './types/UserData';
-import { AuthProvider } from './contexts/AuthContext.tsx';
+import { AuthProvider } from './contexts/AuthContext';
 import LoadingScreen from "./components/LoadingScreen";
-import ContentContainer from "./components/ContentContainer.tsx";
-
+import ContentContainer from "./components/ContentContainer";
 import { BrowserRouter } from 'react-router-dom';
 
 
@@ -55,6 +54,8 @@ function App() {
     setIsRegisterOpen(false);
     setIsLoginOpen(true);
   };
+
+
 
 
   useCheckAuthStatus(setIsAuthenticated, setCurrentUser);

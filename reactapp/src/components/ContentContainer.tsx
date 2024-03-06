@@ -6,8 +6,8 @@ import RoomsList from './RoomsList';
 
 import RoomStream from './RoomStream.jsx';
 import ProfileDetails from './ProfileDetails';
-import RoomCreator from './RoomCreator.tsx';
-import { UserData } from '../types/UserData.tsx';
+import RoomCreator from './RoomCreator';
+import { UserData } from '../types/UserData';
 
 
 
