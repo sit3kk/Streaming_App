@@ -35,3 +35,6 @@ class Room(models.Model):
             unique_id = get_random_string(length=6, allowed_chars=string.ascii_letters + string.digits)
             if not Room.objects.filter(room_id=unique_id).exists():
                 return unique_id
+            
+    def __str__(self):
+        return self.room_name
