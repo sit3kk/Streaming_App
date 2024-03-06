@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext.tsx';
+import { AuthContext } from '../contexts/AuthContext';
+
 
 export const useLogout = () => {
   const { setIsAuthenticated, setCurrentUser } = useContext(AuthContext)!;

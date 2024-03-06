@@ -31,8 +31,11 @@ export const CSRFTokenProvider: React.FC<CSRFTokenProviderProps> = ({ children }
     } else {
   
       const fetchCsrfToken = async () => {
+
+        const API_URL = process.env.REACT_APP_API_KEY
+
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/accounts/csrf_cookie`, {
+          const response = await fetch(`${API_URL}/accounts/csrf_cookie`, {
             method: 'GET',
             credentials: "include",
           });

@@ -3,6 +3,7 @@ import { UserData } from '../types/UserData';
 import { v4 as uuidv4 } from 'uuid';
 
 
+
 export const useCheckAuthStatus = (
   setIsAuthenticated: (isAuthenticated: boolean) => void,
   setCurrentUser: (user: UserData | null) => void
@@ -16,8 +17,14 @@ export const useCheckAuthStatus = (
 
     const checkAuthenticatedStatus = async () => {
       try {
+
         
-        const response = await fetch("http://127.0.0.1:8000/api/accounts/authenticated", {
+        const API_URL = process.env.REACT_APP_API_KEY
+
+        console.log(API_URL + `/accounts/authenticated`)
+
+
+        const response = await fetch(API_URL + `/accounts/authenticated`, {
           method: "GET",
           credentials: "include",
           headers: {

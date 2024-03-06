@@ -32,7 +32,10 @@ const PasswordPrompt: React.FC<PasswordPromptProps> = ({ roomId, username, onClo
   const handlePasswordSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/rooms/authenticate_room', {
+
+      const API_URL = process.env.REACT_APP_API_KEY
+
+      const response = await fetch(API_URL + '/rooms/authenticate_room', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

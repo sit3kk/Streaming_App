@@ -32,7 +32,10 @@ const RoomCreator: React.FC = () => {
         };
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/rooms/create_room`, {
+
+            const API_URL = process.env.REACT_APP_API_KEY
+
+            const response = await fetch(API_URL + `/rooms/create_room`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

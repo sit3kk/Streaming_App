@@ -37,10 +37,10 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
             const roomToken = `room_${id}_token`;
 
 
-
+            const API_URL = process.env.REACT_APP_API_KEY
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/rooms/room_access", {
+                const response = await fetch(API_URL + "rooms/room_access", {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
@@ -76,7 +76,10 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
             (async () => {
                 try {
-                    const response = await fetch("http://127.0.0.1:8000/api/rooms/is_room_owner", {
+
+                    const API_URL = process.env.REACT_APP_API_KEY
+
+                    const response = await fetch(API_URL + "/rooms/is_room_owner", {
                         method: "POST",
                         headers: {
                             'Accept': 'application/json',
@@ -109,9 +112,9 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
     useEffect(() => {
 
+        const WS_URL = process.env.REACT_APP_WS_URL
 
-
-        const ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${id}/`);
+        const ws = new WebSocket(WS_URL + `/chat/${id}/`);
 
         ws.onopen = () => {
             console.log('WebSocket Connected');
@@ -158,7 +161,10 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
     const sendMessage = () => {
         if (isAuthenticated && currentUser) {
-            const ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${id}/`);
+
+            const WS_URL = process.env.REACT_APP_WS_URL
+
+            const ws = new WebSocket(WS_URL + `/chat/${id}/`);
             if (currentMessage !== '') {
                 ws.onopen = () => {
                     const messageData = {
@@ -223,6 +229,9 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
                 },
             ],
         };
+
+        
+        
 
         signalRef.current = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
         clientRef.current = new Client(signalRef.current, config);

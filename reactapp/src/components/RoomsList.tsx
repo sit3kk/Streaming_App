@@ -25,8 +25,11 @@ const RoomsList: React.FC<PasswordPromptProps> = ({username}) => {
         const fetchRooms = async () => {
             setLoading(true); // Start loading
             try {
+                const API_URL = process.env.REACT_APP_API_KEY
+
                 const response = await fetch(
-                    "http://127.0.0.1:8000/api/rooms/list_rooms",
+                    
+                    API_URL + "/rooms/list_rooms",
                     {
                         method: "GET",
                         credentials: "include",

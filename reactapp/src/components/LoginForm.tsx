@@ -3,6 +3,9 @@ import { useCSRFToken } from './CSRFToken'
 import { UserData } from '../types/UserData';
 
 
+
+
+
 interface LoginFormProps {
   onClose: () => void;
   onSignUpClick: () => void;
@@ -40,7 +43,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSignUpClick, onLoginSu
 
   
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/accounts/login", {
+      
+      const API_URL = process.env.REACT_APP_API_KEY
+
+
+      const response = await fetch(`${API_URL}/accounts/login`, {
         method: "POST",
         headers: {
           'Accept': 'application/json',
