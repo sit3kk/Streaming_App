@@ -43,10 +43,10 @@ const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav
       className="bg-neutral-800 text-white fixed top-0 left-0 w-full flex justify-between items-center px-3 py-3 z-50"
-      style={{ borderBottom: "2px solid black" }}
+      style={{ borderBottom: "0.5px solid black" }}
     >
       <a href="/" className="text-xl font-bold">
-        StreamsPL
+        Streams Online
       </a>
       {isAuthenticated && currentUser ? (
         <div className="relative flex items-center">
