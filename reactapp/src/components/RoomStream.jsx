@@ -20,6 +20,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
     const [isHost, setIsHost] = useState(false);
     const [roomAllowed, setRoomAllowed] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const ws = useRef(null);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -40,7 +41,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
             const API_URL = process.env.REACT_APP_API_KEY
 
             try {
-                const response = await fetch(API_URL + "rooms/room_access", {
+                const response = await fetch(API_URL + "/rooms/room_access", {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
@@ -49,7 +50,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
                         "sessionid": document.cookie.split('; ').find(row => row.startsWith('sessionid='))?.split('=')[1] || "",
                     },
                     credentials: "include",
-                    body: JSON.stringify({ room_id: id, username: currentUser?.username, room_token: localStorage.getItem(roomToken) })
+                    body: JSON.stringify({ room_id: id, username: currentUser.username, room_token: localStorage.getItem(roomToken) })
 
                 });
 
@@ -67,7 +68,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
         })();
 
 
-    }, [id]);
+    }, [id, currentUser.username]);
 
     useEffect(() => {
 
@@ -111,74 +112,65 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
 
     useEffect(() => {
+        const WS_URL = process.env.REACT_APP_WS_URL;
+        ws.current = new WebSocket(`${WS_URL}/chat/${id}/`);
 
-        const WS_URL = process.env.REACT_APP_WS_URL
-
-        const ws = new WebSocket(WS_URL + `/chat/${id}/`);
-
-        ws.onopen = () => {
+        ws.current.onopen = () => {
             console.log('WebSocket Connected');
         };
 
-        ws.onmessage = (e) => {
+        ws.current.onmessage = (e) => {
             const data = JSON.parse(e.data);
-            if (data.disable_message) {
+            if (data.disable_message) return;
 
-                return;
+            switch (data.type) {
+                case 'viewers_list': {
+                    const filteredViewersList = data.viewers_list.filter((viewer) => viewer !== "");
+                    setViewersList(filteredViewersList);
+                    break;
+                }
+                case 'anonymous_users_count': {
+                    console.log('Anonymous users count:', data.anonymous_users_count);
+                    break;
+                }
+                default: {
+                    const formattedMessage = `${data.username}: ${data.message}`;
+                    setMessages((prevMessages) => [...prevMessages, formattedMessage]);
+                }
+
+
             }
-
-            if (data.type === 'viewers_list') {
-                const filteredViewersList = data.viewers_list.filter((viewer) => viewer !== "");
-                setViewersList(filteredViewersList);
-                return;
-            }
-
-            if (data.type === 'anonymous_users_count') {
-                console.log('Anonymous users count:', data.anonymous_users_count);
-                return;
-            }
-
-
-
-            const formattedMessage = `${data.username}: ${data.message}`;
-            setMessages((prevMessages) => [...prevMessages, formattedMessage]);
         };
 
-
-
-        ws.onerror = (e) => {
+        ws.current.onerror = (e) => {
             console.error(e);
         };
 
-        ws.onclose = () => {
+        ws.current.onclose = () => {
             console.log('WebSocket Disconnected');
         };
 
+
         return () => {
-            ws.close();
+            ws.current.close();
         };
     }, [id]);
 
     const sendMessage = () => {
-        if (isAuthenticated && currentUser) {
+        if (isAuthenticated && currentUser && currentMessage !== '') {
+            const messageData = {
+                username: currentUser?.username,
+                message: currentMessage,
+            };
 
-            const WS_URL = process.env.REACT_APP_WS_URL
 
-            const ws = new WebSocket(WS_URL + `/chat/${id}/`);
-            if (currentMessage !== '') {
-                ws.onopen = () => {
-                    const messageData = {
-                        username: currentUser?.username,
-                        message: currentMessage
-                    };
-                    ws?.send(JSON.stringify(messageData));
-                };
+            if (ws.current.readyState === WebSocket.OPEN) {
+                ws.current.send(JSON.stringify(messageData));
                 setCurrentMessage('');
             }
         } else {
             alert('You must be logged in to send messages.');
         }
-
     };
 
 
@@ -187,7 +179,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
 
     useEffect(() => {
-        if (!roomAllowed) return;
+
 
         try {
 
@@ -220,7 +212,7 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
     useEffect(() => {
 
-        if (!roomAllowed) return;
+
 
         const config = {
             iceServers: [
@@ -230,8 +222,8 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
             ],
         };
 
-        
-        
+
+
 
         signalRef.current = new IonSFUJSONRPCSignal("ws://localhost:7000/ws");
         clientRef.current = new Client(signalRef.current, config);
@@ -356,13 +348,13 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
 
             {isLoading ? (
                 <>
-               
-                        <div className="fixed top-16 left-0 w-full h-[calc(100%-4rem)] flex bg-neutral-600">
 
-                            <div className="flex-none w-1/6 max-w-xs h-full overflow-y-auto bg-neutral-800"></div>
-                            <div className="flex-grow h-full bg-neutral-900"></div>
-                            <div className="flex-none w-1/4 max-w-sm h-full bg-neutral-800 flex flex-col"></div>
-                            </div>
+                    <div className="fixed top-16 left-0 w-full h-[calc(100%-4rem)] flex bg-neutral-600">
+
+                        <div className="flex-none w-1/6 max-w-xs h-full overflow-y-auto bg-neutral-800"></div>
+                        <div className="flex-grow h-full bg-neutral-900"></div>
+                        <div className="flex-none w-1/4 max-w-sm h-full bg-neutral-800 flex flex-col"></div>
+                    </div>
                 </>
             ) : (
                 <>
@@ -433,9 +425,10 @@ const RoomStream = ({ isAuthenticated, currentUser }) => {
                                     </div>
 
                                 ) :
+
                                     <div className="flex flex-col justify-between h-full">
                                         {streamLive ? (
-                                            <video id="pubVideo" className="bg-black w-full h-full object-cover" controls ref={pubVideo}></video>
+                                            <video id="subVideo" className="bg-black w-full h-full object-cover" controls ref={subVideo}></video>
 
                                         ) : (
                                             <div className="flex-grow flex items-center justify-center bg-neutral-900">
