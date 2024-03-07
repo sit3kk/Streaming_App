@@ -22,7 +22,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
       
      
-        
+
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
@@ -35,10 +35,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if self.user not in self.active_users:
             self.active_users[self.user] = 1
 
-            if not self.user.is_anonymous:
-                
-                await self.channel_layer.group_send(
-                    self.room_group_name,
+        
+            
+            await self.channel_layer.group_send(
+                self.room_group_name,
                     {
                     "type": "chat.message",
                     "message": f"{self.user.username} joined the chat",
@@ -66,7 +66,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if self.active_users[self.user] == 1:
             del self.active_users[self.user]
-
+            
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -105,9 +105,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     async def chat_message(self, event):
 
-        if self.user.is_anonymous:
-            await self.send(text_data=json.dumps({"disable_message": True}))
-            return
+       
 
         message = event["message"]
         username = event["username"]
