@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'rooms',    
     'chat',
     'channels',
+
+    "django_extensions",
 ]
 
 
@@ -76,7 +78,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'https://960f-91-231-100-20.ngrok-free.app'
+    'https://960f-91-231-100-20.ngrok-free.app',
+    'http://192.168.X.X',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -85,7 +88,9 @@ CORS_ALLOWED_ORIGINS = [
     'https://960f-91-231-100-20.ngrok-free.app',
     'http://localhost:3000',
     'http://127.0.0.1:8000',
-    'https://960f-91-231-100-20.ngrok-free.app'
+    'https://960f-91-231-100-20.ngrok-free.app',
+    'http://192.168.X.X',
+
 ]
 
 
@@ -104,6 +109,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r'^http://127.0.0.1:3000$', 
     r'^http://localhost:3000$',
     r'^https://960f-91-231-100-20.ngrok-free.app$',
+    r'^http://192.168.X.X$' 
+    
 ]
 
 
@@ -133,12 +140,26 @@ ASGI_APPLICATION = 'djangoproj.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Streaming_App_DB',  
+        'USER': 'postgres',         
+        'PASSWORD': 'postgres',     
+        'HOST': 'localhost',                
+        'PORT': '5432',              
+    }
+}
+'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation
