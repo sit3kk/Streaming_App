@@ -53,9 +53,19 @@ This secure and flexible authentication system is a key component of the Streami
 
 ![Private Rooms](https://github.com/sit3kk/Streaming_App/assets/69002597/a7c42976-0bea-494f-8682-563e7cb59585)
 
+
+
 ### Security Tokens 🔐
 - The application implements CSRF, SessionId, and RoomId tokens for enhanced security measures.
 - These tokens ensure that communication and access are securely managed, protecting against unauthorized access and cross-site request forgery attacks.
 
 ![CSRF, SessionId, and RoomId Tokens](https://github.com/sit3kk/Streaming_App/assets/69002597/c1368e79-49cb-469c-b968-f85534e76e14)
 ![Room Tokens](https://github.com/sit3kk/Streaming_App/assets/69002597/15d1755a-2d2d-4f55-91d7-e1391593288b)
+
+
+### 🌐 WebRTC Module with SFU Server
+I went with the SFU approach for some top-notch broadcasting power. Using WebRTC here pretty much nails it for us—talking super low latency and keeping those hosting costs in check.
+
+![Screenshot from 2024-03-07 19-28-38](https://github.com/sit3kk/Streaming_App/assets/69002597/37f40559-4536-426c-8e9b-efed01f6048f)
+
+
