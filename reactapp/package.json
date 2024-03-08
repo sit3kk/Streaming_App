@@ -2,7 +2,7 @@
   "name": "reactapp",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
@@ -20,7 +20,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1",
     "react-scripts": "^5.0.1",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "yarn": "^1.22.21"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -31,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.18",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
