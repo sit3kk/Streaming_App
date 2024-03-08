@@ -1,6 +1,6 @@
 # 🎥 Streaming App
 
-The **Streaming App** offers a robust platform for users to **broadcast video and audio content** in a one-to-many relationship. This document outlines the technologies used in the development of both the backend and frontend of the application, as well as the database, streaming module, deployment strategy, and authentication methods.
+The **Streaming App** provides a platform for users to create thematic rooms, broadcast video content in a one-to-many relationship, and chat with each other.
 
 ## 🛠 Technologies Used
 
@@ -39,7 +39,8 @@ Django's session-based authentication system allows for the easy management of u
 - **Protection Against CSRF Attacks:** Utilizes CSRF tokens to protect against Cross-Site Request Forgery, enhancing the security of user data and interactions.
 - **Customizable Authentication Flow:** Allows for the customization of the authentication process, including login, logout, and password management, to suit the specific needs of the application and its users.
 
-![Session Authentication](https://github.com/sit3kk/Streaming_App/assets/69002597/33ce8a5b-fe31-47c1-ad75-b04ff17036de)
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/33ce8a5b-fe31-47c1-ad75-b04ff17036de" width="700">
+
 
 This secure and flexible authentication system is a key component of the Streaming App, ensuring that users can safely access and interact with the platform.
 
@@ -51,7 +52,7 @@ This secure and flexible authentication system is a key component of the Streami
 - Users can create private rooms protected by passwords.
 - Access to these rooms is controlled through custom tokens, enhancing security and privacy.
 
-![Private Rooms](https://github.com/sit3kk/Streaming_App/assets/69002597/a7c42976-0bea-494f-8682-563e7cb59585)
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/a7c42976-0bea-494f-8682-563e7cb59585" width="700">
 
 
 
@@ -66,6 +67,6 @@ This secure and flexible authentication system is a key component of the Streami
 ### 🌐 WebRTC Module with SFU Server
 I went with the SFU approach for some top-notch broadcasting power. Using WebRTC here pretty much nails it for us—talking super low latency and keeping those hosting costs in check.
 
-![Screenshot from 2024-03-07 19-28-38](https://github.com/sit3kk/Streaming_App/assets/69002597/37f40559-4536-426c-8e9b-efed01f6048f)
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/37f40559-4536-426c-8e9b-efed01f6048f" width="700">
 
 
