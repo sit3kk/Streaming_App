@@ -11,6 +11,10 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project
 COPY djangoproj/ /app/
 
+
+# Change ownership of all files to the root user
+RUN chown -R root:root /app
+
 # Expose the port the app runs on
 EXPOSE 8000
 
