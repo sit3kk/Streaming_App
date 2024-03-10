@@ -1,6 +1,6 @@
-# 🎥 Streaming App
+# 🎥 Streaming App Overview
 
-The **Streaming App** provides a platform for users to create thematic rooms, broadcast video content in a one-to-many relationship, and chat with each other.
+The Streaming App provides a versatile platform that enables users to create thematic rooms, broadcast video content and chatting.
 
 ## 🛠 Technologies Used
 
@@ -8,15 +8,13 @@ The **Streaming App** provides a platform for users to create thematic rooms, br
 - **Language:** Python 🐍
 - **Framework:** Django 🌟
 
-
 ### Frontend
 - **Languages:** JavaScript (TypeScript) 📜
 - **Framework:** React ⚛️
 - **Styling:** Tailwind CSS 🌬️
 
 ### Database
-- **Database:** SQLite 📁
-
+- **Type:** SQLite 📁
 
 ### Streaming Module
 - **Technology:** WebRTC 📡
@@ -24,57 +22,60 @@ The **Streaming App** provides a platform for users to create thematic rooms, br
 
 ### Deployment
 - **Containerization:** Docker 🐳
+- **Web Server:** Nginx ✳️
 
+## Key Features
 
-## 🌟 Features
+### 🔒 Authentication
+Utilizes Django's built-in authentication for session management and CSRF protection, ensuring a secure user experience.
 
-## 🔒 Authentication
-
-Authentication within the Streaming App is handled through Django's built-in authentication system, utilizing sessions for securely managing user sessions and access control. This approach ensures that user data and access tokens are securely handled, providing a reliable and secure user experience.
-
-Django's session-based authentication system allows for the easy management of user sessions and authentication states across the application. It enables the application to identify returning users and customize user experiences based on their authentication status.
-
-### Session-Based Authentication Features:
-- **Secure User Identification:** Ensures that user sessions are securely managed and users are correctly identified during their interactions with the app.
-- **Protection Against CSRF Attacks:** Utilizes CSRF tokens to protect against Cross-Site Request Forgery, enhancing the security of user data and interactions.
-- **Customizable Authentication Flow:** Allows for the customization of the authentication process, including login, logout, and password management, to suit the specific needs of the application and its users.
+- Secure User Identification
+- Protection Against CSRF Attacks
+- Customizable Authentication Flow
 
 <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/33ce8a5b-fe31-47c1-ad75-b04ff17036de" style="width: 700px;">
 
-
-This secure and flexible authentication system is a key component of the Streaming App, ensuring that users can safely access and interact with the platform.
-
-
-
-
-### Private Rooms 
-
-- Users can create private rooms protected by passwords.
-- Access to these rooms is controlled through custom tokens, enhancing security and privacy.
+### 🚪 Private Rooms
+Allows users to create password-protected rooms with custom tokens for added security and privacy.
 
 <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/a7c42976-0bea-494f-8682-563e7cb59585" style="width: 700px;">
 
-
-
-### Security Tokens 🔐
-- The application implements CSRF, SessionId, and RoomId tokens for enhanced security measures.
-- These tokens ensure that communication and access are securely managed, protecting against unauthorized access and cross-site request forgery attacks.
+### 🔐 Security Tokens
+Implements various tokens for enhanced security, including CSRF, SessionId, and RoomId.
 
 <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/c1368e79-49cb-469c-b968-f85534e76e14" style="width: 700px;">
 <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/15d1755a-2d2d-4f55-91d7-e1391593288b" style="width: 700px;">
 
-### 🌐 WebRTC Module with SFU Server
-I went with the SFU approach for some top-notch broadcasting power. Using WebRTC here pretty much nails it for us—talking super low latency and keeping those hosting costs in check.
+### 🌐 WebRTC with SFU Server
+Employs the SFU server model for efficient, low-latency broadcasting.
 
 <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/37f40559-4536-426c-8e9b-efed01f6048f" style="width: 700px;">
-
 
 ### ☎️ Django Channels
 This Django feature has been used to let sending messages between users, checking online watchers and following count of users live in each stream. 
 
 <p align="left">
-  <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/05ae3925-a030-47b6-88b7-8a38d40be856" alt="Screenshot from 2024-03-10 14-29-54" style="height: 800px;">
-  <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/38a65092-3c7d-499d-872e-2456c343bd5a" alt="Screenshot from 2024-03-10 14-29-25" style="height: 800px;">
+  <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/05ae3925-a030-47b6-88b7-8a38d40be856" alt="Screenshot from 2024-03-10 14-29-54" style="height: 860px;">
+  <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/38a65092-3c7d-499d-872e-2456c343bd5a" alt="Screenshot from 2024-03-10 14-29-25" style="height: 860px;">
 </p>
 
+### 📄 Architecture Overview
+Illustrates the app's network architecture and communication flow.
 
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/9295f6ef-6edf-4e96-ba9b-ecc4d8efb18f" alt="Screenshot from 2024-03-10 14-29-25" style="width: 700px;">
+
+## Installation Guide
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/sit3kk/Streaming_App.git
+   
+2. **Backend**
+    ```bash
+   cd Streaming_App
+   sudo docker-compose up --build
+
+3. **Frontend**
+    ```bash
+   cd Streaming_App/reactapp
+   yarn start
