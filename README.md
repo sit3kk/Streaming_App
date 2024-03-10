@@ -39,7 +39,7 @@ Django's session-based authentication system allows for the easy management of u
 - **Protection Against CSRF Attacks:** Utilizes CSRF tokens to protect against Cross-Site Request Forgery, enhancing the security of user data and interactions.
 - **Customizable Authentication Flow:** Allows for the customization of the authentication process, including login, logout, and password management, to suit the specific needs of the application and its users.
 
-<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/33ce8a5b-fe31-47c1-ad75-b04ff17036de" width="700">
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/33ce8a5b-fe31-47c1-ad75-b04ff17036de" style="width: 700px;">
 
 
 This secure and flexible authentication system is a key component of the Streaming App, ensuring that users can safely access and interact with the platform.
@@ -52,7 +52,7 @@ This secure and flexible authentication system is a key component of the Streami
 - Users can create private rooms protected by passwords.
 - Access to these rooms is controlled through custom tokens, enhancing security and privacy.
 
-<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/a7c42976-0bea-494f-8682-563e7cb59585" width="700">
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/a7c42976-0bea-494f-8682-563e7cb59585" style="width: 700px;">
 
 
 
@@ -60,13 +60,21 @@ This secure and flexible authentication system is a key component of the Streami
 - The application implements CSRF, SessionId, and RoomId tokens for enhanced security measures.
 - These tokens ensure that communication and access are securely managed, protecting against unauthorized access and cross-site request forgery attacks.
 
-![CSRF, SessionId, and RoomId Tokens](https://github.com/sit3kk/Streaming_App/assets/69002597/c1368e79-49cb-469c-b968-f85534e76e14)
-![Room Tokens](https://github.com/sit3kk/Streaming_App/assets/69002597/15d1755a-2d2d-4f55-91d7-e1391593288b)
-
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/c1368e79-49cb-469c-b968-f85534e76e14" style="width: 700px;">
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/15d1755a-2d2d-4f55-91d7-e1391593288b" style="width: 700px;">
 
 ### 🌐 WebRTC Module with SFU Server
 I went with the SFU approach for some top-notch broadcasting power. Using WebRTC here pretty much nails it for us—talking super low latency and keeping those hosting costs in check.
 
-<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/37f40559-4536-426c-8e9b-efed01f6048f" width="700">
+<img src="https://github.com/sit3kk/Streaming_App/assets/69002597/37f40559-4536-426c-8e9b-efed01f6048f" style="width: 700px;">
+
+
+### ☎️ Django Channels
+This Django feature has been used to let sending messages between users, checking online watchers and following count of users live in each stream. 
+
+<p align="left">
+  <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/05ae3925-a030-47b6-88b7-8a38d40be856" alt="Screenshot from 2024-03-10 14-29-54" style="height: 800px;">
+  <img src="https://github.com/sit3kk/Streaming_App/assets/69002597/38a65092-3c7d-499d-872e-2456c343bd5a" alt="Screenshot from 2024-03-10 14-29-25" style="height: 800px;">
+</p>
 
 
